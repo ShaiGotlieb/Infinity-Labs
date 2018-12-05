@@ -213,10 +213,10 @@ void Teststrstr()
 
 int main(void)
 {
-/*	Teststrdup();*/
+	Teststrdup();
 	Teststrcat();
-/*	Teststrncat();
-	Teststrstr();*/
+	Teststrncat();
+	Teststrstr();
 
 	return EXIT_SUCCESS;
 }
