@@ -41,7 +41,7 @@ char *Addition(char *number1, char *number2)
 	*result = '\0';
 
 	/* check input - number cannot start with '0' or negative */
-	if (*number1 == '0' || *number2 == '0' || *number1 == '-')
+	if (*number1 == '-')
 	{
 		printf("Please enter a valid number! (Number must start with positive digit)\n");
 		return NULL;
@@ -71,19 +71,19 @@ char *Addition(char *number1, char *number2)
 		int current_digit = 0;
 		
 
-	/* set numbers to their value only if they still have digits */
-	if(number1_size - index > 0)
-	{
-		num1 = last1 - '0'; /* convert char to int */
-	}
-	if(number2_size - index > 0)
-	{
-		num2 = last2 - '0'; 
-	}
+		/* set numbers to their value only if they still have digits */
+		if(number1_size - index > 0)
+		{
+			num1 = last1 - '0'; /* convert char to int */
+		}
+		if(number2_size - index > 0)
+		{
+			num2 = last2 - '0'; 
+		}
 
-	added_numbers = num1 + num2 + remainder;
-	remainder = 0; /* reset remainder after use */
-	current_digit = (added_numbers % 10); /* get last digit */
+		added_numbers = num1 + num2 + remainder;
+		remainder = 0; /* reset remainder after use */
+		current_digit = (added_numbers % 10); /* get last digit */
 
 		/* 2 digits number */
 		if (added_numbers > 9)
@@ -115,15 +115,31 @@ char *Addition(char *number1, char *number2)
 	return result;
 }
 
+void TestAddition()
+{
+	char *number1[] = { "2", "0", "0", "17", "1234", "9",  "9", "12345",  "1",      "9999999999",  "11111111111111111111111111111111111111111111111111" };
+	char *number2[] = { "0", "2", "0", "18", "1450", "2",  "1",  "1",     "789170", "1",           "11111111111111111111111111111111111111111111111111" };
+	char *answers[] = { "2", "2", "0", "35", "2684", "11", "10", "12346", "789171", "10000000000", "22222222222222222222222222222222222222222222222222" };
+	int i;
+
+	for (i = 0; i < 11 ; ++i)
+	{
+		char *result = Addition(number1[i], number2[i]);
+		if (*result == *answers[i])
+		{
+			printf("OK! ------ a = %s 	| b = %s 	| a + b = %s\n", number1[i], number2[i], result);
+		}
+		else
+		{
+			printf("ERROR! ------ a = %s | b = %s | a + b = %s\n", number1[i], number2[i], result);
+		}		
+		free(result);
+	}
+}
+
 int main(void)
 {
-	char number1[] = "9999999999";
-	char number2[] = "123456789101112";
-	char *result = Addition(number1, number2);
-
-	printf("a = %s b = %s | a + b = %s\n", number1, number2, result);
-
-	free(result);
+	TestAddition();
 
 	return 0;
 }

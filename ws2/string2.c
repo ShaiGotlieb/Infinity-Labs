@@ -129,6 +129,7 @@ void Teststrdup()
 	{
 		printf("**ERROR!** --- could not duplicate string: %s\n", messages[i]);
 	}
+	free(Str_strdup);
 	}
 	
 }
@@ -200,7 +201,7 @@ void Teststrstr()
 		char *Strstr_return_value = Strstr(messages[i], find[i]);
 		char *strstr_return_value = strstr(messages[i], find[i]);
 
-		if (strcmp(Strstr_return_value, strstr_return_value) == 0)
+		if (Strstr_return_value == strstr_return_value)
 		{
 			printf("OK! --- text \"%s\" was found in text: \"%s\"\n 	result of pointer: %s\n", find[i], messages[i], Strstr_return_value);
 		}
