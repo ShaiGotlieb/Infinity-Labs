@@ -19,12 +19,14 @@ struct command
 };
 
 
-static void checkFOpen(FILE *fp)
+static int checkFOpen(FILE *fp)
 {
 	if (fp == NULL)
 	{
 		perror("Couldn't open file!\n");
+		return FALSE;
 	}
+	return TRUE;
 }
 
 static void GetInput(char *input)
@@ -77,10 +79,14 @@ enum status HandleFile(const char *file_name, const char *input)
 	FILE *fp;
 	
 	MakePath(path, file_name);
+
 	fp = fopen(path, "a+"); 
-	checkFOpen(fp);
-	fputs(input, fp);
-	fclose(fp);
+	if (checkFOpen(fp) == TRUE)
+	{
+		fputs(input, fp);
+		fclose(fp);	
+	}
+	else return FAILED;
 
 	return SUCCESS;
 }
@@ -99,23 +105,24 @@ enum status Count(const char *file_name, const char *input)
 	int current;
 	int lines = 0; 
 
+	UNSUSED(input);
+	
 	MakePath(path, file_name);
 	fp = fopen(path, "r");
-	checkFOpen(fp);
-
-	while ((current = fgetc(fp)) != EOF)
-  	{
-  		if (current == '\n')
-    	{
-    		lines++;
-    	}
-  	}
-	printf("There are: %d lines in the file\n", lines);
-	
-	fclose(fp);
-
-	UNSUSED(input);
-	return SUCCESS;
+	if (checkFOpen(fp) == TRUE)
+	{
+		while ((current = fgetc(fp)) != EOF)
+  		{
+  			if (current == '\n')
+    		{
+    			lines++;
+    		}
+  		}
+		printf("There are: %d lines in the file\n", lines);
+		fclose(fp);
+		return SUCCESS;
+	}
+	return FAILED;
 }
 	
 enum status Remove(const char *file_name, const char *input)
@@ -123,6 +130,8 @@ enum status Remove(const char *file_name, const char *input)
 	char path[SIZE] = PATH;
 	int status = 0;
 	
+	UNSUSED(input);
+
 	MakePath(path, file_name);
 	status = remove(path);
 
@@ -137,7 +146,6 @@ enum status Remove(const char *file_name, const char *input)
 
 	}
 
-	UNSUSED(input);
 	return SUCCESS;
 }
 
@@ -159,23 +167,22 @@ enum status AppendToBegin(const char *file_name, const char *input)
 	fp = fopen(path, "a+");
 	ftmp = fopen(tmp_file, "a+");
 	
-	checkFOpen(fp);
-	checkFOpen(ftmp);
+	if (checkFOpen(fp) == TRUE && checkFOpen(ftmp) == TRUE)
+	{
+		/* copy data from original file to temporary file */
+		while ((current = fgetc(fp)) != EOF)
+    		fputc(current, ftmp);
 
-	/* copy data from original file to temporary file */
-	while ((current = fgetc(fp)) != EOF)
-    	fputc(current, ftmp);
+    	fclose(ftmp);
+    	fclose(fp);
 
-    fclose(ftmp);
-    fclose(fp);
+		/* rename the temporary file to replace the original file */
+		rename(tmp_file, path);
 
-	/* rename the temporary file to replace the original file */
-	rename(tmp_file, path);
-
-	return SUCCESS;
+		return SUCCESS;
+	}
+	return FAILED;
 }
-
-
 
 enum status Logger(const char *file_name)
 {
