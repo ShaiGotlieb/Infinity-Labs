@@ -54,9 +54,21 @@ void addFloat(struct struct_funcs *s_item, int num)
 void addString(struct struct_funcs *s_item, int num)
 {
 	char str[MAX_LINE];
+	int size = 0;
+
+	sprintf(str, "%d", num);
+	size = strlen(s_item->data) + strlen(str) + 1;
+	s_item->data = (char *)realloc((s_item->data), size);
+	
+
+	if(NULL == s_item->data)
+	{
+		printf("allocation failed");
+		exit(0);
+	}
 	
 	assert(s_item);
-	sprintf(str, "%d", num);
+	
 	strcat(s_item->data, str);
 }
 
