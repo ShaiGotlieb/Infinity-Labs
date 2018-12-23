@@ -60,11 +60,10 @@ void addString(struct struct_funcs *s_item, int num)
 	size = strlen(s_item->data) + strlen(str) + 1;
 	s_item->data = (char *)realloc((s_item->data), size);
 	
-
 	if(NULL == s_item->data)
 	{
 		printf("allocation failed");
-		exit(0);
+		exit(EXIT_FAILURE);
 	}
 	
 	assert(s_item);
@@ -87,23 +86,19 @@ void FreeIntAndFloat(struct struct_funcs *s_item)
 
 void Init(int num, float f, char *string, int to_add)
 {
-
 	struct struct_funcs arr[3];
-	struct struct_funcs struct1;
-	struct struct_funcs struct2;
-	struct struct_funcs struct3;
-	
 	int arr_size = ARRAY_LENGTH(arr);
 	int i;
 
 	char *str = calloc(sizeof(char), INT_MAX);
-	
-	assert(str);
-	strcpy(str, string);
 
-	arr[0] = struct1;
-	arr[1] = struct2;
-	arr[2] = struct3;
+	if(NULL == str)
+	{
+		printf("allocation failed");
+		exit(EXIT_FAILURE);
+	}
+
+	strcpy(str, string);
 
 	*(int *)&(arr[0].data) = num;
 	*(float *)&(arr[1].data) = f;

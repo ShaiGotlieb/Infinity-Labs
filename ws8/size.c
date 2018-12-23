@@ -30,16 +30,16 @@ int main()
 	struct X x;
 	struct Card card;
 
+
 	int a = 18;
 	double b = 8.45;
-
-	card.suit = 8;
-	card.face = 100;
-
 	int sizea = SIZEOF(a);
 	int sizeb = SIZEOF(b);
 	int typea = TYPEOF(int);
 	int typeb = TYPEOF(char);
+
+	card.suit = 8;
+	card.face = 100;
 
 	printf("%d\n", sizea);
 	printf("%d\n", sizeb);
@@ -48,7 +48,8 @@ int main()
 	printf("%d\n", sizeof(numbers));
 	printf("%d\n", sizeof(x));
 	printf("%d\n", sizeof(card));
-	printf("%d\n", sizeof(unsigned int));
+printf("%d\n", sizeof(unsigned int));
+printf("%s\n", _TIME_);
 
 	return 0;
 }

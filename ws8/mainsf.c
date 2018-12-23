@@ -4,7 +4,7 @@ void Init(int, float, char *, int);
 
 int main()
 {
-	Init(8, 5.25, "", 4);
+	Init(8, 5.25, "abcd4", 21483647);
 
 	return EXIT_SUCCESS;
 }
